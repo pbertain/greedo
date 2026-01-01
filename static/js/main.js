@@ -118,14 +118,14 @@ class GreedoApp {
             
             this.updateElement('utc-time', this.formatDateTime(utcDate, 'UTC'));
             this.updateElement('local-time', this.formatDateTime(localDate, this.timestampData.time.tz));
-            this.updateElement('unix-time', this.timestampData.unix.toLocaleString());
+            this.updateElement('unix-time', this.timestampData.unix.toString());
         }
         
         // Update Star Wars time
         if (this.timestampData.sw) {
-            this.updateElement('swet-time', this.timestampData.sw.swet.toLocaleString());
+            this.updateElement('swet-time', this.timestampData.sw.swet.toString());
             this.updateElement('cgt-time', this.timestampData.sw.cgt_str);
-            this.updateElement('gsc-year', this.timestampData.sw.gsc_year.toLocaleString());
+            this.updateElement('gsc-year', this.timestampData.sw.gsc_year.toString());
             this.showElement('star-wars-section');
         }
         

@@ -302,7 +302,7 @@
                 
                 if (data.sw) {
                     // Update SWET
-                    document.getElementById('current-swet').textContent = data.sw.swet.toLocaleString();
+                    document.getElementById('current-swet').textContent = data.sw.swet.toString();
                     
                     // Calculate years since Star Wars release
                     const yearsSince = Math.floor(data.sw.swet / (365.25 * 24 * 60 * 60));
@@ -312,7 +312,7 @@
                     document.getElementById('current-cgt').textContent = data.sw.cgt_str;
                     
                     // Update GSC
-                    document.getElementById('current-gsc').textContent = data.sw.gsc_year.toLocaleString();
+                    document.getElementById('current-gsc').textContent = data.sw.gsc_year.toString();
                 }
             } catch (error) {
                 console.error('Failed to load current data:', error);
