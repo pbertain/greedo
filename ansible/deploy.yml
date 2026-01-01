@@ -54,7 +54,7 @@
         src: ../
         dest: "{{ deploy_dir }}/"
         delete: yes
-        private_key: ~/.ssh/id_rsa
+        private_key: /home/runner/.ssh/id_rsa
         rsync_opts:
           - "--exclude=.git"
           - "--exclude=.github"
