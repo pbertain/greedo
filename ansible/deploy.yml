@@ -62,37 +62,33 @@
 
     - name: Copy application files
       copy:
-        src: "{{ playbook_dir }}/../{{ item }}"
-        dest: "{{ deploy_dir }}/{{ item }}"
+        src: "{{ item }}"
+        dest: "{{ deploy_dir }}/"
         mode: preserve
-      delegate_to: localhost
-      with_items:
-        - app.py
-        - requirements.txt
-        - LICENSE
-        - README.md
-        - DEPLOYMENT.md
+      with_fileglob:
+        - "{{ playbook_dir }}/../app.py"
+        - "{{ playbook_dir }}/../requirements.txt"
+        - "{{ playbook_dir }}/../LICENSE"
+        - "{{ playbook_dir }}/../README.md"
+        - "{{ playbook_dir }}/../DEPLOYMENT.md"
 
     - name: Copy static directory
       copy:
-        src: "{{ playbook_dir }}/../static/"
-        dest: "{{ deploy_dir }}/static/"
+        src: "{{ playbook_dir }}/../static"
+        dest: "{{ deploy_dir }}/"
         mode: preserve
-      delegate_to: localhost
 
     - name: Copy templates directory
       copy:
-        src: "{{ playbook_dir }}/../templates/"
-        dest: "{{ deploy_dir }}/templates/"
+        src: "{{ playbook_dir }}/../templates"
+        dest: "{{ deploy_dir }}/"
         mode: preserve
-      delegate_to: localhost
 
     - name: Copy holonet-stamp directory
       copy:
-        src: "{{ playbook_dir }}/../holonet-stamp/"
-        dest: "{{ deploy_dir }}/holonet-stamp/"
+        src: "{{ playbook_dir }}/../holonet-stamp"
+        dest: "{{ deploy_dir }}/"
         mode: preserve
-      delegate_to: localhost
 
     - name: Verify requirements.txt was copied
       stat:
