@@ -11,7 +11,10 @@
       apt:
         update_cache: yes
         upgrade: dist
+        cache_valid_time: 3600
       when: ansible_os_family == "Debian"
+      retries: 3
+      delay: 10
 
     - name: Install system dependencies
       apt:
@@ -102,7 +105,7 @@
 
     - name: Deploy nginx sites-available configuration
       synchronize:
-        src: "../conf/{{ environment }}/nginx/sites-available/"
+        src: "../conf/{{ env }}/nginx/sites-available/"
         dest: "/etc/nginx/sites-available/"
         delete: no
       delegate_to: localhost
@@ -112,7 +115,7 @@
 
     - name: Deploy nginx sites-enabled configuration
       synchronize:
-        src: "../conf/{{ environment }}/nginx/sites-enabled/"
+        src: "../conf/{{ env }}/nginx/sites-enabled/"
         dest: "/etc/nginx/sites-enabled/"
         delete: no
       delegate_to: localhost
