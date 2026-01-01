@@ -51,7 +51,7 @@
 
     - name: Copy application code
       synchronize:
-        src: ../
+        src: "{{ playbook_dir }}/../"
         dest: "{{ deploy_dir }}/"
         delete: yes
         private_key: /home/runner/.ssh/id_rsa
@@ -64,6 +64,15 @@
           - "--exclude=*.pyc"
           - "--exclude=.DS_Store"
       delegate_to: localhost
+
+    - name: Verify requirements.txt was copied
+      stat:
+        path: "{{ deploy_dir }}/requirements.txt"
+      register: requirements_check
+
+    - name: Show requirements.txt status
+      debug:
+        msg: "requirements.txt {{ 'exists' if requirements_check.stat.exists else 'MISSING' }} at {{ deploy_dir }}/requirements.txt"
 
     - name: Set ownership of application directory
       file:
