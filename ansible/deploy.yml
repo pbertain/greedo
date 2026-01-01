@@ -165,21 +165,23 @@
         mode: '0600'
 
     - name: Deploy nginx sites-available configuration
-      synchronize:
-        src: "../conf/{{ env }}/nginx/sites-available/"
+      copy:
+        src: "{{ playbook_dir }}/../conf/{{ env }}/nginx/sites-available/"
         dest: "/etc/nginx/sites-available/"
-        delete: no
-      delegate_to: localhost
+        mode: preserve
+        owner: root
+        group: root
       notify:
         - test nginx config
         - restart nginx
 
     - name: Deploy nginx sites-enabled configuration
-      synchronize:
-        src: "../conf/{{ env }}/nginx/sites-enabled/"
+      copy:
+        src: "{{ playbook_dir }}/../conf/{{ env }}/nginx/sites-enabled/"
         dest: "/etc/nginx/sites-enabled/"
-        delete: no
-      delegate_to: localhost
+        mode: preserve
+        owner: root
+        group: root
       notify:
         - test nginx config
         - restart nginx
