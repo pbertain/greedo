@@ -120,7 +120,7 @@
       apt:
         name: ca-certificates
         state: present
-        update_cache: yes
+        update_cache: no
       ignore_errors: yes
 
     - name: Create Python virtual environment

@@ -52,9 +52,9 @@ jobs:
     - name: Health check
       run: |
         sleep 30
-        curl -f http://host74.nird.club:17000/api/health || exit 1
+        curl -f https://gree.do/api/health || exit 1
         
     - name: Notification
       run: |
         echo "🚀 Production deployment completed successfully!"
-        echo "Site: http://host74.nird.club:17000"
+        echo "Site: https://gree.do"

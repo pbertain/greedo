@@ -44,4 +44,4 @@ jobs:
     - name: Health check
       run: |
         sleep 30
-        curl -f http://host78.nird.club:17000/api/health || exit 1
+        curl -f https://dev.gree.do/api/health || exit 1
