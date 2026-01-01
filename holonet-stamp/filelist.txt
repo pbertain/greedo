@@ -1,0 +1,10 @@
+holonet-stamp/
+├── sw_time.py                # Core Star Wars time math (library)
+├── holonet_stamp.py          # CLI / formatter / RID logic
+├── test_sw_time.py           # Unit tests for sw_time.py
+├── test_holonet_stamp.py     # Unit tests for holonet_stamp.py
+├── pyproject.toml            # Packaging + CLI entry point
+├── requirements.txt          # Runtime deps (minimal)
+├── README.md                 # Project overview + usage
+├── ARCHITECTURE.md           # Design & invariants
+└── OPERATIONS.md             # How to run in prod

@@ -1,0 +1,31 @@
+[Unit]
+Description=Gree.do Star Wars Holonet Timestamp System
+After=network.target
+
+[Service]
+Type=simple
+User={{ app_name }}
+Group={{ app_name }}
+WorkingDirectory={{ deploy_dir }}
+Environment=PATH={{ deploy_dir }}/venv/bin
+EnvironmentFile={{ deploy_dir }}/.env
+ExecStart={{ deploy_dir }}/venv/bin/python {{ deploy_dir }}/app.py
+Restart=always
+RestartSec=10
+KillMode=mixed
+TimeoutStopSec=5
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier={{ app_name }}
+
+# Security
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths={{ deploy_dir }}
+
+[Install]
+WantedBy=multi-user.target

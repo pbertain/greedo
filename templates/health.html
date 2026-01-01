@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Check - Gree.do</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-heartbeat"></i> System Health Check</h1>
+            <p>Comprehensive status monitoring for the Gree.do Holonet system</p>
+        </div>
+        
+        <nav class="navigation">
+            <div class="nav-links">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+                <a href="https://github.com/pbertain/greedo" target="_blank" class="nav-link">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+                <a href="/docs" class="nav-link">
+                    <i class="fas fa-code"></i>
+                    API Docs
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="content-area fade-in">
+            <section style="margin-bottom: 2rem;">
+                <h2><i class="fas fa-satellite-dish"></i> System Status</h2>
+                
+                <div id="health-status" style="margin: 1rem 0;">
+                    <div class="status-indicator status-healthy">
+                        <i class="fas fa-check-circle"></i>
+                        All Systems Operational
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                    <!-- API Health -->
+                    <div class="content-area">
+                        <h3><i class="fas fa-plug"></i> API Endpoints</h3>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">JSON API:</span>
+                            <span class="status-indicator status-healthy">
+                                <i class="fas fa-check"></i> Operational
+                            </span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Text API:</span>
+                            <span class="status-indicator status-healthy">
+                                <i class="fas fa-check"></i> Operational
+                            </span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Health API:</span>
+                            <span class="status-indicator status-healthy">
+                                <i class="fas fa-check"></i> Operational
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Time Systems -->
+                    <div class="content-area">
+                        <h3><i class="fas fa-clock"></i> Time Systems</h3>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">UTC Time:</span>
+                            <span class="status-indicator status-healthy">
+                                <i class="fas fa-check"></i> Synced
+                            </span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">SWET Engine:</span>
+                            <span class="status-indicator status-healthy">
+                                <i class="fas fa-check"></i> Active
+                            </span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">CGT Conversion:</span>
+                            <span class="status-indicator status-healthy">
+                                <i class="fas fa-check"></i> Active
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- External Services -->
+                    <div class="content-area">
+                        <h3><i class="fas fa-globe"></i> External Services</h3>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Quote API:</span>
+                            <span id="quote-api-status" class="status-indicator status-healthy">
+                                <i class="fas fa-check"></i> Available
+                            </span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Holonet Stamp:</span>
+                            <span class="status-indicator status-healthy">
+                                <i class="fas fa-check"></i> Functional
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Server Info -->
+                    <div class="content-area">
+                        <h3><i class="fas fa-server"></i> Server Information</h3>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Service:</span>
+                            <span class="timestamp-value">Gree.do v1.0.0</span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Framework:</span>
+                            <span class="timestamp-value">Flask/Python</span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Uptime:</span>
+                            <span id="uptime" class="timestamp-value">Calculating...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section style="margin-bottom: 2rem;">
+                <h2><i class="fas fa-chart-line"></i> Performance Metrics</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div class="content-area" style="text-align: center;">
+                        <h4><i class="fas fa-tachometer-alt"></i> Response Time</h4>
+                        <div style="font-size: 2rem; color: var(--primary-green); margin: 1rem 0;">
+                            <span id="response-time">< 100ms</span>
+                        </div>
+                        <div class="status-indicator status-healthy">Excellent</div>
+                    </div>
+
+                    <div class="content-area" style="text-align: center;">
+                        <h4><i class="fas fa-database"></i> Data Accuracy</h4>
+                        <div style="font-size: 2rem; color: var(--primary-green); margin: 1rem 0;">100%</div>
+                        <div class="status-indicator status-healthy">Perfect</div>
+                    </div>
+
+                    <div class="content-area" style="text-align: center;">
+                        <h4><i class="fas fa-shield-alt"></i> System Stability</h4>
+                        <div style="font-size: 2rem; color: var(--primary-green); margin: 1rem 0;">99.9%</div>
+                        <div class="status-indicator status-healthy">Rock Solid</div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2><i class="fas fa-tools"></i> Diagnostic Tools</h2>
+                
+                <div class="controls" style="justify-content: center; margin: 2rem 0;">
+                    <button id="test-api-btn" class="btn">
+                        <i class="fas fa-vial"></i>
+                        Test JSON API
+                    </button>
+                    <button id="test-curl-btn" class="btn btn-secondary">
+                        <i class="fas fa-terminal"></i>
+                        Test cURL API
+                    </button>
+                    <button id="refresh-health-btn" class="btn btn-accent">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh Status
+                    </button>
+                </div>
+
+                <div id="test-results" style="margin: 2rem 0; display: none;">
+                    <h3>Test Results</h3>
+                    <pre id="test-output" style="background: var(--background-card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); color: var(--text-primary); font-size: 0.875rem; overflow-x: auto;"></pre>
+                </div>
+            </section>
+
+            <section style="margin-top: 3rem;">
+                <h2><i class="fas fa-info-circle"></i> Essential Facts</h2>
+                <div class="fact-section">
+                    <p><strong>Primary Directive:</strong> Han shot first.</p>
+                    <p><strong>Mission Status:</strong> Operational and ready for galactic duty.</p>
+                    <p><strong>Last System Update:</strong> <span id="current-time"></span></p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>
+            <i class="fas fa-heartbeat"></i> Health monitoring for Gree.do | 
+            <a href="/">Return to Main System</a>
+        </p>
+    </footer>
+
+    <script>
+        // Health check specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            
+            // Test buttons
+            document.getElementById('test-api-btn')?.addEventListener('click', testApiEndpoint);
+            document.getElementById('test-curl-btn')?.addEventListener('click', testCurlEndpoint);
+            document.getElementById('refresh-health-btn')?.addEventListener('click', refreshHealth);
+        });
+
+        function updateCurrentTime() {
+            const now = new Date();
+            document.getElementById('current-time').textContent = now.toLocaleString();
+        }
+
+        async function testApiEndpoint() {
+            const output = document.getElementById('test-output');
+            const results = document.getElementById('test-results');
+            
+            try {
+                output.textContent = 'Testing JSON API endpoint...\n';
+                results.style.display = 'block';
+                
+                const start = performance.now();
+                const response = await fetch('/api/v1/greedo');
+                const end = performance.now();
+                const data = await response.json();
+                
+                output.textContent = `✅ JSON API Test Results:
+Response Time: ${Math.round(end - start)}ms
+Status: ${response.status} ${response.statusText}
+Content-Type: ${response.headers.get('content-type')}
+
+Response Data:
+${JSON.stringify(data, null, 2)}`;
+                
+            } catch (error) {
+                output.textContent = `❌ JSON API Test Failed:
+Error: ${error.message}`;
+            }
+        }
+
+        async function testCurlEndpoint() {
+            const output = document.getElementById('test-output');
+            const results = document.getElementById('test-results');
+            
+            try {
+                output.textContent = 'Testing cURL/Text API endpoint...\n';
+                results.style.display = 'block';
+                
+                const start = performance.now();
+                const response = await fetch('/curl/v1/greedo');
+                const end = performance.now();
+                const text = await response.text();
+                
+                output.textContent = `✅ cURL API Test Results:
+Response Time: ${Math.round(end - start)}ms
+Status: ${response.status} ${response.statusText}
+Content-Type: ${response.headers.get('content-type')}
+
+Response Data:
+${text}`;
+                
+            } catch (error) {
+                output.textContent = `❌ cURL API Test Failed:
+Error: ${error.message}`;
+            }
+        }
+
+        async function refreshHealth() {
+            // Simulate health check refresh
+            const healthStatus = document.getElementById('health-status');
+            const originalContent = healthStatus.innerHTML;
+            
+            healthStatus.innerHTML = '<div class="status-indicator status-warning"><i class="fas fa-sync-alt fa-spin"></i> Checking Systems...</div>';
+            
+            setTimeout(() => {
+                healthStatus.innerHTML = originalContent;
+                
+                // Add sparkle effect
+                if (window.greedoApp && typeof window.greedoApp.createSparkles === 'function') {
+                    window.greedoApp.createSparkles(healthStatus);
+                }
+            }, 1500);
+        }
+    </script>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

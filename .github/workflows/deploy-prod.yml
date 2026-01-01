@@ -1,0 +1,60 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_production:
+        description: 'Type "DEPLOY-TO-PROD" to confirm production deployment'
+        required: true
+        default: ''
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Verify production confirmation
+      if: github.event.inputs.confirm_production != 'DEPLOY-TO-PROD'
+      run: |
+        echo "Production deployment requires confirmation. Please enter 'DEPLOY-TO-PROD' in the input field."
+        exit 1
+        
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install Ansible
+      run: |
+        python -m pip install --upgrade pip
+        pip install ansible
+        
+    - name: Create SSH key file
+      run: |
+        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        mkdir -p ~/.ssh
+        
+    - name: Add hosts to known_hosts
+      run: |
+        ssh-keyscan -H host74.nird.club >> ~/.ssh/known_hosts
+        
+    - name: Run Ansible deployment
+      run: |
+        cd ansible
+        ansible-playbook -i inventory/prod.yml deploy.yml
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: False
+        
+    - name: Health check
+      run: |
+        sleep 30
+        curl -f http://host74.nird.club:17000/api/health || exit 1
+        
+    - name: Notification
+      run: |
+        echo "🚀 Production deployment completed successfully!"
+        echo "Site: http://host74.nird.club:17000"

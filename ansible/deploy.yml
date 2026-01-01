@@ -1,0 +1,186 @@
+---
+- name: Deploy Gree.do Application
+  hosts: all
+  become: yes
+  vars:
+    app_name: gree-do
+    python_version: "3.11"
+    
+  tasks:
+    - name: Update system packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+      when: ansible_os_family == "Debian"
+
+    - name: Install system dependencies
+      apt:
+        name:
+          - python3
+          - python3-pip
+          - python3-venv
+          - git
+          - nginx
+          - supervisor
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Create application user
+      user:
+        name: "{{ app_name }}"
+        system: yes
+        shell: /bin/bash
+        home: "{{ deploy_dir }}"
+        create_home: yes
+
+    - name: Create deployment directory
+      file:
+        path: "{{ deploy_dir }}"
+        state: directory
+        owner: "{{ app_name }}"
+        group: "{{ app_name }}"
+        mode: '0755'
+
+    - name: Stop existing application service
+      systemd:
+        name: "{{ app_name }}"
+        state: stopped
+      ignore_errors: yes
+
+    - name: Copy application code
+      synchronize:
+        src: ../
+        dest: "{{ deploy_dir }}/"
+        delete: yes
+        exclude:
+          - .git
+          - .github
+          - ansible
+          - venv
+          - __pycache__
+          - "*.pyc"
+          - .DS_Store
+      delegate_to: localhost
+
+    - name: Set ownership of application directory
+      file:
+        path: "{{ deploy_dir }}"
+        owner: "{{ app_name }}"
+        group: "{{ app_name }}"
+        recurse: yes
+
+    - name: Create Python virtual environment
+      command: python3 -m venv {{ deploy_dir }}/venv
+      become_user: "{{ app_name }}"
+      args:
+        creates: "{{ deploy_dir }}/venv/bin/python"
+
+    - name: Install Python dependencies
+      pip:
+        requirements: "{{ deploy_dir }}/requirements.txt"
+        virtualenv: "{{ deploy_dir }}/venv"
+      become_user: "{{ app_name }}"
+
+    - name: Create systemd service file
+      template:
+        src: templates/gree-do.service.j2
+        dest: "/etc/systemd/system/{{ app_name }}.service"
+        owner: root
+        group: root
+        mode: '0644'
+      notify:
+        - reload systemd
+        - restart application
+
+    - name: Create application environment file
+      template:
+        src: templates/gree-do.env.j2
+        dest: "{{ deploy_dir }}/.env"
+        owner: "{{ app_name }}"
+        group: "{{ app_name }}"
+        mode: '0600'
+
+    - name: Deploy nginx sites-available configuration
+      synchronize:
+        src: "../conf/{{ environment }}/nginx/sites-available/"
+        dest: "/etc/nginx/sites-available/"
+        delete: no
+      delegate_to: localhost
+      notify:
+        - test nginx config
+        - restart nginx
+
+    - name: Deploy nginx sites-enabled configuration
+      synchronize:
+        src: "../conf/{{ environment }}/nginx/sites-enabled/"
+        dest: "/etc/nginx/sites-enabled/"
+        delete: no
+      delegate_to: localhost
+      notify:
+        - test nginx config
+        - restart nginx
+
+    - name: Set ownership of nginx configuration files
+      file:
+        path: "{{ item }}"
+        owner: root
+        group: root
+        mode: '0644'
+        state: file
+      with_fileglob:
+        - "/etc/nginx/sites-available/*gree-do*"
+        - "/etc/nginx/sites-enabled/*gree-do*"
+      notify:
+        - test nginx config
+        - restart nginx
+
+    - name: Remove default nginx site if it exists
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      notify:
+        - test nginx config
+        - restart nginx
+
+    - name: Enable and start application service
+      systemd:
+        name: "{{ app_name }}"
+        enabled: yes
+        state: started
+        daemon_reload: yes
+
+    - name: Wait for application to start
+      wait_for:
+        port: "{{ app_port }}"
+        host: localhost
+        delay: 10
+        timeout: 60
+
+    - name: Check application health
+      uri:
+        url: "http://localhost:{{ app_port }}/api/health"
+        method: GET
+        status_code: 200
+      retries: 3
+      delay: 10
+
+  handlers:
+    - name: reload systemd
+      systemd:
+        daemon_reload: yes
+
+    - name: restart application
+      systemd:
+        name: "{{ app_name }}"
+        state: restarted
+
+    - name: test nginx config
+      command: /usr/local/nginx/sbin/nginx -t
+      register: nginx_test_result
+      failed_when: nginx_test_result.rc != 0
+
+    - name: restart nginx
+      systemd:
+        name: nginx
+        state: restarted
+      when: nginx_test_result is succeeded

@@ -1,0 +1,47 @@
+name: Deploy to Dev Environment
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install Ansible
+      run: |
+        python -m pip install --upgrade pip
+        pip install ansible
+        
+    - name: Create SSH key file
+      run: |
+        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        mkdir -p ~/.ssh
+        
+    - name: Add hosts to known_hosts
+      run: |
+        ssh-keyscan -H host78.nird.club >> ~/.ssh/known_hosts
+        
+    - name: Run Ansible deployment
+      run: |
+        cd ansible
+        ansible-playbook -i inventory/dev.yml deploy.yml
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: False
+        
+    - name: Health check
+      run: |
+        sleep 30
+        curl -f http://host78.nird.club:17000/api/health || exit 1

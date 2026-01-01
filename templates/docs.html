@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - Gree.do</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-code"></i> Swagger API Documentation</h1>
+            <p>Interactive testing interface for Gree.do API endpoints</p>
+        </div>
+        
+        <nav class="navigation">
+            <div class="nav-links">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+                <a href="/redoc" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    ReDoc
+                </a>
+                <a href="/health" class="nav-link">
+                    <i class="fas fa-heartbeat"></i>
+                    Health
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Swagger UI Container -->
+    <div id="swagger-ui"></div>
+
+    <!-- Swagger UI CSS and JS -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@4.15.5/swagger-ui.css" />
+    <script src="https://unpkg.com/swagger-ui-dist@4.15.5/swagger-ui-bundle.js"></script>
+
+    <script>
+        // Initialize Swagger UI with custom styling
+        const ui = SwaggerUIBundle({
+            url: '/openapi.json',
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIBundle.presets.standalone
+            ],
+            plugins: [
+                SwaggerUIBundle.plugins.DownloadUrl
+            ],
+            layout: "StandaloneLayout",
+            // Custom styling to match our theme
+            onComplete: function() {
+                // Apply custom CSS after Swagger UI loads
+                applyCustomStyling();
+            }
+        });
+
+        function applyCustomStyling() {
+            // Create custom style element
+            const style = document.createElement('style');
+            style.textContent = `
+                /* Custom Swagger UI styling to match Gree.do theme */
+                .swagger-ui {
+                    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+                    background: var(--background) !important;
+                }
+
+                .swagger-ui .topbar {
+                    background: linear-gradient(135deg, var(--primary-green), var(--secondary-teal)) !important;
+                    border-bottom: 3px solid var(--accent-brown) !important;
+                }
+
+                .swagger-ui .topbar .download-url-wrapper {
+                    display: none !important;
+                }
+
+                .swagger-ui .info {
+                    margin: 2rem 0 !important;
+                }
+
+                .swagger-ui .info .title {
+                    color: var(--primary-green) !important;
+                    font-size: 2.5rem !important;
+                    font-weight: 700 !important;
+                }
+
+                .swagger-ui .info .description {
+                    color: var(--text-secondary) !important;
+                    font-size: 1.125rem !important;
+                }
+
+                .swagger-ui .scheme-container {
+                    background: var(--background-card) !important;
+                    border: 1px solid var(--border-color) !important;
+                    border-radius: 8px !important;
+                    padding: 1rem !important;
+                }
+
+                .swagger-ui .opblock-summary {
+                    border: 1px solid var(--border-color) !important;
+                    background: var(--background-card) !important;
+                }
+
+                .swagger-ui .opblock-summary:hover {
+                    background: var(--background-hover) !important;
+                }
+
+                .swagger-ui .opblock.opblock-get {
+                    border-color: var(--primary-green) !important;
+                }
+
+                .swagger-ui .opblock.opblock-get .opblock-summary-method {
+                    background: var(--primary-green) !important;
+                }
+
+                .swagger-ui .opblock.opblock-get .tab-header .tab-item.active h4 span:after {
+                    background: var(--primary-green) !important;
+                }
+
+                .swagger-ui .opblock-body {
+                    background: var(--background-card) !important;
+                    border: 1px solid var(--border-color) !important;
+                }
+
+                .swagger-ui .responses-inner {
+                    background: var(--background) !important;
+                }
+
+                .swagger-ui .response-col_status {
+                    color: var(--primary-green) !important;
+                    font-weight: 600 !important;
+                }
+
+                .swagger-ui .response-col_description {
+                    color: var(--text-secondary) !important;
+                }
+
+                .swagger-ui .btn.execute {
+                    background: var(--primary-green) !important;
+                    border-color: var(--primary-green) !important;
+                    color: white !important;
+                    font-weight: 600 !important;
+                }
+
+                .swagger-ui .btn.execute:hover {
+                    background: var(--primary-green-dark) !important;
+                    border-color: var(--primary-green-dark) !important;
+                }
+
+                .swagger-ui .btn.try-out__btn {
+                    background: var(--secondary-teal) !important;
+                    border-color: var(--secondary-teal) !important;
+                    color: white !important;
+                }
+
+                .swagger-ui .btn.try-out__btn:hover {
+                    background: var(--secondary-teal-dark) !important;
+                    border-color: var(--secondary-teal-dark) !important;
+                }
+
+                .swagger-ui .highlight-code {
+                    background: var(--background-card) !important;
+                    border: 1px solid var(--border-color) !important;
+                    border-radius: 8px !important;
+                }
+
+                .swagger-ui .model-box {
+                    background: var(--background-card) !important;
+                    border: 1px solid var(--border-color) !important;
+                }
+
+                .swagger-ui table {
+                    background: var(--background-card) !important;
+                }
+
+                .swagger-ui table thead tr th {
+                    color: var(--primary-green) !important;
+                    font-weight: 600 !important;
+                    border-bottom: 2px solid var(--primary-green) !important;
+                }
+
+                .swagger-ui table tbody tr td {
+                    color: var(--text-secondary) !important;
+                    border-top: 1px solid var(--border-color) !important;
+                }
+
+                .swagger-ui .parameter__name {
+                    color: var(--primary-green) !important;
+                    font-weight: 600 !important;
+                }
+
+                .swagger-ui .parameter__type {
+                    color: var(--secondary-teal) !important;
+                    font-weight: 500 !important;
+                }
+
+                .swagger-ui .response-content-type {
+                    color: var(--text-primary) !important;
+                }
+
+                .swagger-ui select {
+                    background: var(--background-card) !important;
+                    border: 1px solid var(--border-color) !important;
+                    color: var(--text-primary) !important;
+                }
+
+                .swagger-ui input[type="text"] {
+                    background: var(--background-card) !important;
+                    border: 1px solid var(--border-color) !important;
+                    color: var(--text-primary) !important;
+                }
+
+                .swagger-ui textarea {
+                    background: var(--background-card) !important;
+                    border: 1px solid var(--border-color) !important;
+                    color: var(--text-primary) !important;
+                }
+
+                /* Add some fun hover effects */
+                .swagger-ui .opblock-summary:hover {
+                    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2) !important;
+                    transform: translateY(-2px) !important;
+                    transition: all 0.3s ease !important;
+                }
+
+                .swagger-ui .btn:hover {
+                    transform: translateY(-2px) !important;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+                    transition: all 0.3s ease !important;
+                }
+
+                /* Dark scrollbar */
+                .swagger-ui ::-webkit-scrollbar {
+                    width: 8px;
+                }
+
+                .swagger-ui ::-webkit-scrollbar-track {
+                    background: var(--background) !important;
+                }
+
+                .swagger-ui ::-webkit-scrollbar-thumb {
+                    background: var(--primary-green) !important;
+                    border-radius: 4px;
+                }
+
+                .swagger-ui ::-webkit-scrollbar-thumb:hover {
+                    background: var(--primary-green-dark) !important;
+                }
+
+                /* Add the Gree.do fact at the bottom */
+                .swagger-ui::after {
+                    content: "Remember: Han shot first! 🚀";
+                    display: block;
+                    text-align: center;
+                    color: var(--primary-green);
+                    font-weight: 600;
+                    padding: 2rem;
+                    margin-top: 2rem;
+                    border-top: 2px solid var(--primary-green);
+                    font-size: 1.125rem;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Also apply CSS custom properties to the document
+            const root = document.documentElement;
+            root.style.setProperty('--background', '#0f172a');
+            root.style.setProperty('--background-card', '#1e293b');
+            root.style.setProperty('--background-hover', '#334155');
+            root.style.setProperty('--text-primary', '#f8fafc');
+            root.style.setProperty('--text-secondary', '#cbd5e1');
+            root.style.setProperty('--primary-green', '#10b981');
+            root.style.setProperty('--primary-green-dark', '#059669');
+            root.style.setProperty('--secondary-teal', '#14b8a6');
+            root.style.setProperty('--secondary-teal-dark', '#0f766e');
+            root.style.setProperty('--accent-brown', '#8b5a2b');
+            root.style.setProperty('--border-color', '#475569');
+        }
+    </script>
+
+    <footer class="footer">
+        <p>
+            <i class="fas fa-code"></i> Interactive API documentation for Gree.do | 
+            <a href="/redoc">Switch to ReDoc</a> | 
+            <a href="/">Return to Home</a>
+        </p>
+    </footer>
+</body>
+</html>

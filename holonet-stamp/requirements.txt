@@ -1,0 +1,6 @@
+# Python >= 3.9 required (for zoneinfo)
+# No third-party runtime dependencies
+
+# Optional (only if you want nicer test output or future expansion):
+# pytest
+

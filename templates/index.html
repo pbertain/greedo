@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gree.do - Star Wars Holonet Timestamp System</title>
+    
+    <!-- Meta tags for SEO and social sharing -->
+    <meta name="description" content="A dynamic Star Wars-themed timestamp system with real-time data, SWET (Star Wars Epoch Time), and galactic time conversions.">
+    <meta name="keywords" content="Star Wars, timestamp, API, SWET, CGT, Holonet, time conversion">
+    <meta name="author" content="Paul Bertanier">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/pbertain/greedo">
+    <meta property="og:title" content="Gree.do - Star Wars Holonet Timestamp System">
+    <meta property="og:description" content="A dynamic Star Wars-themed timestamp system with real-time data and galactic time conversions.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://github.com/pbertain/greedo">
+    <meta property="twitter:title" content="Gree.do - Star Wars Holonet Timestamp System">
+    <meta property="twitter:description" content="A dynamic Star Wars-themed timestamp system with real-time data and galactic time conversions.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <!-- Header with banner and navigation -->
+    <header class="header">
+        <div class="header-content">
+            <img src="{{ url_for('static', filename='img/gree-do-banner.png') }}" alt="Gree.do Banner" class="banner-image">
+        </div>
+        
+        <!-- Navigation in bottom right -->
+        <nav class="navigation">
+            <div class="nav-links">
+                <a href="https://github.com/pbertain/greedo" target="_blank" class="nav-link">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+                <a href="/docs" class="nav-link">
+                    <i class="fas fa-code"></i>
+                    Swagger
+                </a>
+                <a href="/redoc" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    ReDoc
+                </a>
+                <a href="/health" class="nav-link">
+                    <i class="fas fa-heartbeat"></i>
+                    Health
+                </a>
+                <a href="/about" class="nav-link">
+                    <i class="fas fa-info-circle"></i>
+                    About
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main content -->
+    <main class="container">
+        <div class="main-content">
+            <!-- Primary content area -->
+            <div class="content-area fade-in">
+                <!-- Logo section with animations -->
+                <section class="logo-section">
+                    <div class="logo-container">
+                        <img id="logo" src="{{ url_for('static', filename='img/gree-do-logo.png') }}" alt="Gree.do Logo" class="logo-image logo-bounce">
+                    </div>
+                    
+                    <!-- Controls -->
+                    <div class="controls">
+                        <button id="refresh-btn" class="btn">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh Data
+                        </button>
+                        <button id="animate-btn" class="btn btn-secondary">
+                            <i class="fas fa-magic"></i>
+                            Change Animation
+                        </button>
+                        <a href="/api/v1/greedo" target="_blank" class="btn btn-accent">
+                            <i class="fas fa-code"></i>
+                            View JSON API
+                        </a>
+                        <a href="/curl/v1/greedo" target="_blank" class="btn btn-accent">
+                            <i class="fas fa-terminal"></i>
+                            View Text API
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Real-time timestamp data -->
+                <section class="timestamp-data">
+                    <div class="timestamp-section">
+                        <h3><i class="fas fa-clock"></i> Real Time</h3>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">UTC:</span>
+                            <span id="utc-time" class="timestamp-value">Loading...</span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Local (PST):</span>
+                            <span id="local-time" class="timestamp-value">Loading...</span>
+                        </div>
+                    </div>
+
+                    <div class="timestamp-section">
+                        <h3><i class="fas fa-calculator"></i> Unix Epoch</h3>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Unix Timestamp:</span>
+                            <span id="unix-time" class="timestamp-value">Loading...</span>
+                        </div>
+                    </div>
+
+                    <div id="star-wars-section" class="timestamp-section" style="display: none;">
+                        <h3><i class="fas fa-rocket"></i> Star Wars Time</h3>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">SWET:</span>
+                            <span id="swet-time" class="timestamp-value">Loading...</span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">CGT:</span>
+                            <span id="cgt-time" class="timestamp-value">Loading...</span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">GSC Year:</span>
+                            <span id="gsc-year" class="timestamp-value">Loading...</span>
+                        </div>
+                    </div>
+
+                    <div class="timestamp-section">
+                        <h3><i class="fas fa-id-badge"></i> Request Info</h3>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Request ID:</span>
+                            <span id="request-id" class="timestamp-value">Loading...</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- API endpoint examples -->
+                <section class="content-area" style="margin-top: 2rem;">
+                    <h3><i class="fas fa-code"></i> API Endpoints</h3>
+                    <div style="margin: 1rem 0;">
+                        <h4>JSON Endpoint:</h4>
+                        <code style="background: rgba(16, 185, 129, 0.1); padding: 0.5rem; border-radius: 4px; display: block; margin: 0.5rem 0;">
+                            GET {{ request.url_root }}api/v1/greedo
+                        </code>
+                        
+                        <h4>Text/cURL Endpoint:</h4>
+                        <code style="background: rgba(16, 185, 129, 0.1); padding: 0.5rem; border-radius: 4px; display: block; margin: 0.5rem 0;">
+                            curl {{ request.url_root }}curl/v1/greedo
+                        </code>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar slide-in">
+                <h3><i class="fas fa-star"></i> Galaxy Facts</h3>
+                
+                <!-- Always present fact -->
+                <div class="fact-section">
+                    <h4><i class="fas fa-shield-alt"></i> Essential Fact</h4>
+                    <p id="fact">Loading...</p>
+                </div>
+
+                <!-- Random quote section -->
+                <div id="quote-section" class="quote-section" style="display: none;">
+                    <h4><i class="fas fa-quote-left"></i> Rando Factissian</h4>
+                    <p id="quote">Loading...</p>
+                </div>
+
+                <!-- Status indicators -->
+                <div style="margin: 1.5rem 0;">
+                    <h4><i class="fas fa-satellite-dish"></i> System Status</h4>
+                    <div class="status-indicator status-healthy">
+                        <i class="fas fa-check-circle"></i>
+                        Holonet Online
+                    </div>
+                </div>
+
+                <!-- Quick links -->
+                <div style="margin: 1.5rem 0;">
+                    <h4><i class="fas fa-external-link-alt"></i> Quick Links</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/docs" class="btn btn-secondary" style="text-align: center; padding: 0.5rem;">
+                            <i class="fas fa-code"></i> API Docs
+                        </a>
+                        <a href="/health" class="btn btn-secondary" style="text-align: center; padding: 0.5rem;">
+                            <i class="fas fa-heartbeat"></i> Health Check
+                        </a>
+                        <a href="/about" class="btn btn-secondary" style="text-align: center; padding: 0.5rem;">
+                            <i class="fas fa-info-circle"></i> About SWET
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Loading indicator -->
+                <div style="text-align: center; margin: 1rem 0;">
+                    <span class="loading" style="display: none;"></span>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>
+            Built with 🚀 by <a href="https://github.com/pbertain">Paul Bertanier</a> | 
+            <a href="https://github.com/pbertain/greedo">View on GitHub</a> | 
+            Licensed under <a href="/LICENSE">MIT License</a>
+        </p>
+        <p style="margin-top: 0.5rem;">
+            <em>Remember: Han shot first! ⚡</em>
+        </p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    <!-- Additional initialization -->
+    <script>
+        // Initialize easter eggs
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.greedoApp && typeof window.greedoApp.initEasterEggs === 'function') {
+                window.greedoApp.initEasterEggs();
+            }
+        });
+    </script>
+</body>
+</html>

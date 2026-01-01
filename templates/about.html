@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Gree.do - Star Wars Epoch Time (SWET)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-info-circle"></i> About Gree.do</h1>
+            <p>Understanding Star Wars Epoch Time and Galactic Time Systems</p>
+        </div>
+        
+        <nav class="navigation">
+            <div class="nav-links">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+                <a href="/health" class="nav-link">
+                    <i class="fas fa-heartbeat"></i>
+                    Health
+                </a>
+                <a href="/docs" class="nav-link">
+                    <i class="fas fa-code"></i>
+                    API Docs
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="content-area fade-in">
+            
+            <!-- Introduction -->
+            <section style="margin-bottom: 3rem;">
+                <h2><i class="fas fa-rocket"></i> What is Gree.do?</h2>
+                <p style="font-size: 1.125rem; line-height: 1.8; color: var(--text-secondary);">
+                    Gree.do is a dynamic web service that provides both real-world and Star Wars-themed timestamps through a beautiful animated interface and REST API endpoints. It combines practical time-keeping with the rich lore of the Star Wars universe, offering multiple galactic time systems for developers, fans, and anyone who wants to add a touch of galactic magic to their projects.
+                </p>
+                
+                <div class="fact-section" style="margin: 2rem 0;">
+                    <h3><i class="fas fa-shield-alt"></i> Essential Truth</h3>
+                    <p style="font-size: 1.25rem; font-weight: 600;">Han shot first.</p>
+                    <p>This fundamental fact anchors our understanding of the galaxy and serves as the cornerstone of all temporal calculations within the Gree.do system.</p>
+                </div>
+            </section>
+
+            <!-- SWET Section -->
+            <section style="margin-bottom: 3rem;">
+                <h2><i class="fas fa-star"></i> SWET (Star Wars Epoch Time)</h2>
+                
+                <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(20, 184, 166, 0.1)); padding: 2rem; border-radius: 12px; border: 2px solid var(--primary-green); margin: 1.5rem 0;">
+                    <h3>The Foundation of Galactic Time</h3>
+                    <p>
+                        <strong>SWET (Star Wars Epoch Time)</strong> is a custom time system designed specifically for this project, 
+                        similar to Unix time but with a galactic twist. SWET counts seconds since the theatrical release 
+                        of Star Wars: A New Hope.
+                    </p>
+                    
+                    <div class="timestamp-data" style="margin: 1.5rem 0;">
+                        <h4>SWET Specifications:</h4>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Epoch Start:</span>
+                            <span class="timestamp-value">1977-05-25 00:00:00 UTC</span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Unit:</span>
+                            <span class="timestamp-value">Seconds</span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Current SWET:</span>
+                            <span id="current-swet" class="timestamp-value">Loading...</span>
+                        </div>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Years Since Release:</span>
+                            <span id="years-since" class="timestamp-value">Loading...</span>
+                        </div>
+                    </div>
+                    
+                    <h4>Why May 25, 1977?</h4>
+                    <p>
+                        This date marks the theatrical release of Star Wars in the United States, making it the perfect 
+                        anchor point for galactic time. Just as Unix time starts from January 1, 1970 (the "Unix Epoch"), 
+                        SWET starts from the moment that changed science fiction forever.
+                    </p>
+                </div>
+            </section>
+
+            <!-- CGT Section -->
+            <section style="margin-bottom: 3rem;">
+                <h2><i class="fas fa-globe"></i> CGT (Combine Galactic Time)</h2>
+                
+                <p>
+                    Combine Galactic Time is an established time system used by the Star Wars Combine community. 
+                    It provides a standardized way to represent time across the galaxy.
+                </p>
+                
+                <div class="timestamp-data">
+                    <h4>CGT Specifications:</h4>
+                    <div class="timestamp-item">
+                        <span class="timestamp-label">Year Length:</span>
+                        <span class="timestamp-value">365 days</span>
+                    </div>
+                    <div class="timestamp-item">
+                        <span class="timestamp-label">Day Length:</span>
+                        <span class="timestamp-value">24 hours</span>
+                    </div>
+                    <div class="timestamp-item">
+                        <span class="timestamp-label">Day Range:</span>
+                        <span class="timestamp-value">1-365</span>
+                    </div>
+                    <div class="timestamp-item">
+                        <span class="timestamp-label">Current CGT:</span>
+                        <span id="current-cgt" class="timestamp-value">Loading...</span>
+                    </div>
+                </div>
+
+                <h4>CGT Epoch Modes:</h4>
+                <ul style="margin: 1rem 0; padding-left: 2rem;">
+                    <li><strong>Current Mode:</strong> CGT(0,1,0,0,0) = 1998-12-03 07:00:00 UTC</li>
+                    <li><strong>Legacy Mode:</strong> CGT(0,1,0,0,0) = 1998-12-03 00:00:00 UTC</li>
+                </ul>
+            </section>
+
+            <!-- Other Time Systems -->
+            <section style="margin-bottom: 3rem;">
+                <h2><i class="fas fa-calendar-alt"></i> Other Star Wars Time Systems</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    
+                    <div class="content-area">
+                        <h3><i class="fas fa-medal"></i> GSC</h3>
+                        <h4>Galactic Standard Calendar</h4>
+                        <p>The most widely used calendar system in the Star Wars universe, providing a standardized reference for galactic events.</p>
+                        <div class="timestamp-item">
+                            <span class="timestamp-label">Current GSC Year:</span>
+                            <span id="current-gsc" class="timestamp-value">Loading...</span>
+                        </div>
+                    </div>
+
+                    <div class="content-area">
+                        <h3><i class="fas fa-crown"></i> BBY/ABY</h3>
+                        <h4>Before/After Battle of Yavin</h4>
+                        <p>Timeline system centered around the pivotal Battle of Yavin, where Luke Skywalker destroyed the first Death Star.</p>
+                        <div class="quote-section">
+                            <p><em>"The ability to destroy a planet is insignificant next to the power of the Force."</em></p>
+                        </div>
+                    </div>
+
+                    <div class="content-area">
+                        <h3><i class="fas fa-handshake"></i> BTC/ATC</h3>
+                        <h4>Before/After Treaty of Coruscant</h4>
+                        <p>Historical dating system based on the Treaty of Coruscant, marking significant political changes in the galaxy.</p>
+                    </div>
+
+                    <div class="content-area">
+                        <h3><i class="fas fa-sync-alt"></i> GrS</h3>
+                        <h4>Great ReSynchronization</h4>
+                        <p>A calendar reform that standardized time-keeping across different star systems and cultures.</p>
+                    </div>
+
+                    <div class="content-area">
+                        <h3><i class="fas fa-mountain"></i> TYA</h3>
+                        <h4>Tho Yor Arrival</h4>
+                        <p>Ancient dating system marking the arrival of the mysterious Tho Yor ships and the founding of the Je'daii Order.</p>
+                    </div>
+
+                    <div class="content-area">
+                        <h3><i class="fas fa-balance-scale"></i> Ruusan</h3>
+                        <h4>Ruusan Reformation</h4>
+                        <p>Calendar system based on the Ruusan Reformation, which reorganized the Galactic Republic after the New Sith Wars.</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Technical Implementation -->
+            <section style="margin-bottom: 3rem;">
+                <h2><i class="fas fa-cogs"></i> Technical Implementation</h2>
+                
+                <p>
+                    The Gree.do system is built using modern web technologies and follows established astronomical 
+                    and time-keeping principles adapted for the Star Wars universe.
+                </p>
+
+                <div class="timestamp-data">
+                    <h4>Key Features:</h4>
+                    <div class="timestamp-item">
+                        <span class="timestamp-label">Deterministic:</span>
+                        <span class="timestamp-value">Same input = Same output</span>
+                    </div>
+                    <div class="timestamp-item">
+                        <span class="timestamp-label">Testable:</span>
+                        <span class="timestamp-value">Comprehensive unit tests</span>
+                    </div>
+                    <div class="timestamp-item">
+                        <span class="timestamp-label">Log-friendly:</span>
+                        <span class="timestamp-value">Multiple output formats</span>
+                    </div>
+                    <div class="timestamp-item">
+                        <span class="timestamp-label">Human-readable:</span>
+                        <span class="timestamp-value">Clear, intuitive displays</span>
+                    </div>
+                </div>
+
+                <h4>Conversion Accuracy:</h4>
+                <p>
+                    All time conversions are mathematically precise and follow established Star Wars lore where possible. 
+                    The system handles timezone conversions automatically and supports both naive and timezone-aware datetime objects.
+                </p>
+            </section>
+
+            <!-- API Usage -->
+            <section style="margin-bottom: 3rem;">
+                <h2><i class="fas fa-code"></i> Using the Gree.do API</h2>
+                
+                <p>Gree.do provides two primary API endpoints for integration into your projects:</p>
+                
+                <div style="margin: 2rem 0;">
+                    <h4><i class="fas fa-json"></i> JSON API Endpoint</h4>
+                    <code style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px; display: block; margin: 0.5rem 0;">
+                        GET /api/v1/greedo
+                    </code>
+                    <p>Returns structured JSON data perfect for web applications and API integrations.</p>
+                </div>
+                
+                <div style="margin: 2rem 0;">
+                    <h4><i class="fas fa-terminal"></i> Text/cURL Endpoint</h4>
+                    <code style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px; display: block; margin: 0.5rem 0;">
+                        curl {{ request.url_root }}curl/v1/greedo
+                    </code>
+                    <p>Returns human-readable plain text format ideal for command-line usage and scripts.</p>
+                </div>
+
+                <div class="controls" style="justify-content: center; margin: 2rem 0;">
+                    <a href="/docs" class="btn">
+                        <i class="fas fa-book"></i>
+                        View Full API Documentation
+                    </a>
+                    <a href="/api/v1/greedo" target="_blank" class="btn btn-secondary">
+                        <i class="fas fa-external-link-alt"></i>
+                        Try JSON API
+                    </a>
+                </div>
+            </section>
+
+            <!-- Credits and References -->
+            <section>
+                <h2><i class="fas fa-heart"></i> Credits and References</h2>
+                
+                <div class="quote-section">
+                    <h4>Special Thanks</h4>
+                    <ul style="margin: 1rem 0; padding-left: 2rem;">
+                        <li><strong>Crystal Odenkirk</strong> - Star Wars calendar conversions and timeline research</li>
+                        <li><strong>SWCombine Community</strong> - Combine Galactic Time specifications</li>
+                        <li><strong>George Lucas</strong> - Creating the Star Wars universe that makes this all possible</li>
+                    </ul>
+                </div>
+
+                <h4>External References:</h4>
+                <ul style="margin: 1rem 0; padding-left: 2rem;">
+                    <li><a href="https://crysodenkirk.com/conlangs/SWtimeline.php" target="_blank">Crystal Odenkirk's Star Wars Timeline</a></li>
+                    <li><a href="https://www.swcombine.com/rules/?Timeframe#Combine_Galactic_Time" target="_blank">SWCombine CGT Documentation</a></li>
+                    <li><a href="https://github.com/pbertain/greedo" target="_blank">Gree.do Source Code</a></li>
+                </ul>
+
+                <div class="fact-section" style="margin: 2rem 0;">
+                    <p style="text-align: center; font-size: 1.25rem; font-weight: 600;">
+                        <i class="fas fa-star"></i> 
+                        May the Force be with you, and remember: Han shot first! 
+                        <i class="fas fa-star"></i>
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>
+            Built with ❤️ and the Force | <a href="/">Return to Gree.do</a> | 
+            <a href="https://github.com/pbertain/greedo">View Source</a>
+        </p>
+    </footer>
+
+    <script>
+        // About page specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCurrentData();
+            setInterval(loadCurrentData, 10000); // Update every 10 seconds
+        });
+
+        async function loadCurrentData() {
+            try {
+                const response = await fetch('/api/v1/greedo');
+                const data = await response.json();
+                
+                if (data.sw) {
+                    // Update SWET
+                    document.getElementById('current-swet').textContent = data.sw.swet.toLocaleString();
+                    
+                    // Calculate years since Star Wars release
+                    const yearsSince = Math.floor(data.sw.swet / (365.25 * 24 * 60 * 60));
+                    document.getElementById('years-since').textContent = yearsSince.toFixed(1) + ' years';
+                    
+                    // Update CGT
+                    document.getElementById('current-cgt').textContent = data.sw.cgt_str;
+                    
+                    // Update GSC
+                    document.getElementById('current-gsc').textContent = data.sw.gsc_year.toLocaleString();
+                }
+            } catch (error) {
+                console.error('Failed to load current data:', error);
+            }
+        }
+    </script>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+HOLONET TIMESTAMP SYSTEM — TECHNICAL HANDOFF NOTES
+
+This document explains how to use and test the Star Wars time conversion library (sw_time.py)
+and the Holonet timestamp CLI (holonet_stamp.py). It is intended as a handoff reference for
+another engineer or AI.
+
+============================================================
+FILES AND RESPONSIBILITIES
+============================================================
+
+sw_time.py — Star Wars time conversion library
+
+- CGT (Combine Galactic Time) <-> UTC datetime
+  * 365-day years, 24-hour days
+  * Day of year: 1–365
+  * Epoch modes:
+    - current: CGT(0,1,0,0,0) == 1998-12-03 07:00:00 UTC
+    - legacy : CGT(0,1,0,0,0) == 1998-12-03 00:00:00 UTC
+
+- Timezone conversion using IANA names
+  (e.g. America/Los_Angeles handles PST/PDT automatically)
+
+- SWET (Star Wars Epoch Time)
+  * Seconds since 1977-05-25 00:00:00 UTC
+
+- Year-only Star Wars calendar conversions
+  * BTC / ATC  (Treaty of Coruscant)
+  * BBY / ABY  (Battle of Yavin)
+  * GrS        (Great ReSynchronization)
+  * GSC        (Galactic Standard Calendar)
+  * TYA        (Tho Yor Arrival)
+  * Ruus       (Ruusan Reformation)
+  * LY         (Lothal Years)
+
+Design notes:
+- No I/O
+- Safe to import
+- Fully unit tested
+
+
+------------------------------------------------------------
+
+holonet_stamp.py — Holonet timestamp CLI
+
+Always outputs:
+- Fact: Han shot first.
+- UTC time
+- Local time
+- Unix epoch seconds
+
+Optional (--sw-time):
+- SWET
+- CGT
+- GSC year
+- CGT epoch mode
+
+Output formats:
+- Pretty text (default, banner + color)
+- One-line logs (--one-line)
+- Forced minimal logs (--quiet)
+- JSON (--json)
+
+Request ID support:
+- Accepts --request-id
+- Reads inbound X-Request-ID from environment
+- Auto-generates when missing
+- Prefix support:
+  * api-   (JSON)
+  * curl-  (one-line / quiet)
+  * web-   (pretty output)
+
+Downstream propagation:
+- X-Request-ID header added to outbound HTTP calls
+
+
+============================================================
+COMMON USAGE
+============================================================
+
+Pretty output:
+holonet-stamp --sw-time
+
+API usage:
+holonet-stamp --sw-time --json
+
+Curl / plaintext:
+holonet-stamp --sw-time --quiet
+
+Explicit RID:
+holonet-stamp --request-id 123 --rid-prefix api- --json
+
+
+============================================================
+TESTING
+============================================================
+
+Run all tests:
+python -m unittest -v
+
+test_sw_time.py covers:
+- CGT epoch correctness
+- Round-trip CGT <-> UTC
+- Timezone conversion
+- SWET epoch (Star Wars release == SWET 0)
+
+test_holonet_stamp.py covers:
+- Fact always present
+- Request ID always present
+- Auto-prefix logic
+- X-Request-ID ingestion
+- One-line output contract
+
+
+============================================================
+REFERENCES
+============================================================
+
+Star Wars calendar conversions:
+https://crysodenkirk.com/conlangs/SWtimeline.php
+
+Combine Galactic Time:
+https://www.swcombine.com/rules/?Timeframe#Combine_Galactic_Time
+https://www.swcombine.com/rules/?Timeframe#CGT/GMT_time_Convertor
+
+============================================================
+FINAL NOTE
+============================================================
+
+This system is designed to be:
+- deterministic
+- testable
+- log-friendly
+- human-readable
+
+And yes:
+
+Han shot first.
