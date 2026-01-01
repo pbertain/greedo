@@ -47,20 +47,21 @@
         name: "{{ app_name }}"
         state: stopped
       ignore_errors: yes
+      failed_when: false
 
     - name: Copy application code
       synchronize:
         src: ../
         dest: "{{ deploy_dir }}/"
         delete: yes
-        exclude:
-          - .git
-          - .github
-          - ansible
-          - venv
-          - __pycache__
-          - "*.pyc"
-          - .DS_Store
+        rsync_opts:
+          - "--exclude=.git"
+          - "--exclude=.github"
+          - "--exclude=ansible"
+          - "--exclude=venv"
+          - "--exclude=__pycache__"
+          - "--exclude=*.pyc"
+          - "--exclude=.DS_Store"
       delegate_to: localhost
 
     - name: Set ownership of application directory
