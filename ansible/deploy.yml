@@ -7,22 +7,7 @@
     python_version: "3.11"
     
   tasks:
-    - name: Update system packages
-      apt:
-        update_cache: yes
-        upgrade: dist
-        cache_valid_time: 3600
-      when: ansible_os_family == "Debian"
-      retries: 2
-      delay: 5
-      ignore_errors: yes
-      register: apt_update_result
-
-    - name: Show apt update status
-      debug:
-        msg: "APT update {{ 'succeeded' if apt_update_result is succeeded else 'failed but continuing deployment' }}"
-
-    - name: Install system dependencies
+    - name: Install system dependencies (without system update)
       apt:
         name:
           - python3
@@ -32,10 +17,14 @@
           - nginx
           - supervisor
         state: present
-        cache_valid_time: 3600
+        update_cache: no
       when: ansible_os_family == "Debian"
-      retries: 3
-      delay: 10
+      ignore_errors: yes
+      register: package_install_result
+
+    - name: Show package installation status
+      debug:
+        msg: "Package installation {{ 'succeeded' if package_install_result is succeeded else 'had some issues but continuing' }}"
 
     - name: Create application user
       user:
