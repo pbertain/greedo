@@ -34,9 +34,9 @@ jobs:
         
     - name: Create SSH key file
       run: |
+        mkdir -p ~/.ssh
         echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        mkdir -p ~/.ssh
         
     - name: Add hosts to known_hosts
       run: |
