@@ -13,8 +13,14 @@
         upgrade: dist
         cache_valid_time: 3600
       when: ansible_os_family == "Debian"
-      retries: 3
-      delay: 10
+      retries: 2
+      delay: 5
+      ignore_errors: yes
+      register: apt_update_result
+
+    - name: Show apt update status
+      debug:
+        msg: "APT update {{ 'succeeded' if apt_update_result is succeeded else 'failed but continuing deployment' }}"
 
     - name: Install system dependencies
       apt:
@@ -26,7 +32,10 @@
           - nginx
           - supervisor
         state: present
+        cache_valid_time: 3600
       when: ansible_os_family == "Debian"
+      retries: 3
+      delay: 10
 
     - name: Create application user
       user:
