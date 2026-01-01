@@ -116,16 +116,33 @@
         group: "{{ app_name }}"
         recurse: yes
 
+    - name: Install ca-certificates for pip SSL
+      apt:
+        name: ca-certificates
+        state: present
+        update_cache: yes
+      ignore_errors: yes
+
     - name: Create Python virtual environment
       command: python3 -m venv {{ deploy_dir }}/venv
       become_user: "{{ app_name }}"
       args:
         creates: "{{ deploy_dir }}/venv/bin/python"
 
+    - name: Upgrade pip in virtual environment
+      pip:
+        name: pip
+        state: latest
+        virtualenv: "{{ deploy_dir }}/venv"
+        extra_args: "--trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org"
+      become_user: "{{ app_name }}"
+      ignore_errors: yes
+
     - name: Install Python dependencies
       pip:
         requirements: "{{ deploy_dir }}/requirements.txt"
         virtualenv: "{{ deploy_dir }}/venv"
+        extra_args: "--trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org"
       become_user: "{{ app_name }}"
 
     - name: Create systemd service file
