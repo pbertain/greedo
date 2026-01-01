@@ -79,7 +79,7 @@ body {
 }
 
 .banner-image {
-    max-width: 750px;
+    max-width: 1125px;
     height: auto;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
