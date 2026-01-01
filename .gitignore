@@ -67,4 +67,4 @@ id_rsa.pub
 
 # Deployment
 .ansible/
-ansible/group_vars/all/vault.yml
+ansible/group_vars/all/vault.yml# Trigger deployment
