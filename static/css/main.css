@@ -73,21 +73,15 @@ body {
 .header-content {
     position: relative;
     z-index: 2;
-    padding: 2rem 1rem;
+    padding: 4rem 1rem;
     text-align: center;
     background: rgba(15, 23, 42, 0.7);
-}
-
-.banner-image {
-    max-width: 400px;
-    height: auto;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 /* Navigation Bar */
 .navigation {
     position: absolute;
-    bottom: 1rem;
+    bottom: -2rem;
     right: 1rem;
     z-index: 3;
 }
