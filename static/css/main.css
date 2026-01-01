@@ -74,18 +74,14 @@ body {
     position: relative;
     z-index: 2;
     padding: 2rem 1rem;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
+    text-align: center;
     background: rgba(15, 23, 42, 0.7);
-    min-height: 200px;
 }
 
 .banner-image {
-    max-width: 900px;
+    max-width: 750px;
     height: auto;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-    align-self: flex-end;
 }
 
 /* Navigation Bar */
