@@ -20,6 +20,9 @@
             --redoc-text-secondary-color: #cbd5e1 !important;
             --redoc-border-color: #475569 !important;
             
+            /* Force all text to be light colored */
+            color: #f8fafc !important;
+            
             /* Code styling */
             --redoc-code-background-color: #1e293b !important;
             --redoc-code-text-color: #e2e8f0 !important;
@@ -64,6 +67,86 @@
         .redoc-container {
             font-family: 'Inter', 'Segoe UI', sans-serif !important;
             background: var(--background) !important;
+            color: #f8fafc !important;
+        }
+
+        /* Force all text elements to be readable */
+        redoc * {
+            color: #f8fafc !important;
+        }
+
+        redoc h1, redoc h2, redoc h3, redoc h4, redoc h5, redoc h6 {
+            color: #f8fafc !important;
+        }
+
+        redoc p, redoc div, redoc span, redoc label, redoc td, redoc th {
+            color: #f8fafc !important;
+        }
+
+        redoc .redoc-markdown p, redoc .redoc-markdown div {
+            color: #cbd5e1 !important;
+        }
+
+        /* Schema and property styling */
+        redoc [role="button"] {
+            color: #f8fafc !important;
+        }
+
+        redoc .property-name {
+            color: #10b981 !important;
+        }
+
+        redoc .property-type {
+            color: #14b8a6 !important;
+        }
+
+        redoc .property-description {
+            color: #cbd5e1 !important;
+        }
+
+        /* Operation and parameter styling */
+        redoc .operation-path {
+            color: #f8fafc !important;
+            background: #1e293b !important;
+        }
+
+        redoc .field-name {
+            color: #10b981 !important;
+        }
+
+        redoc .field-type {
+            color: #14b8a6 !important;
+        }
+
+        redoc .field-description {
+            color: #cbd5e1 !important;
+        }
+
+        redoc .response-type {
+            color: #f8fafc !important;
+        }
+
+        /* Menu items */
+        redoc .menu-item-level {
+            color: #cbd5e1 !important;
+        }
+
+        redoc .menu-item-level.active {
+            color: #10b981 !important;
+        }
+
+        /* Code blocks and examples */
+        redoc pre {
+            background: #1e293b !important;
+            color: #e2e8f0 !important;
+            border: 1px solid #475569 !important;
+        }
+
+        redoc code {
+            background: #1e293b !important;
+            color: #e2e8f0 !important;
+            padding: 2px 4px !important;
+            border-radius: 4px !important;
         }
 
         /* Header customization */
