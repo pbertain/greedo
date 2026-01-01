@@ -49,20 +49,49 @@
       ignore_errors: yes
       failed_when: false
 
-    - name: Copy application code
-      synchronize:
-        src: "{{ playbook_dir }}/../"
-        dest: "{{ deploy_dir }}/"
-        delete: yes
-        private_key: /home/runner/.ssh/id_rsa
-        rsync_opts:
-          - "--exclude=.git"
-          - "--exclude=.github"
-          - "--exclude=ansible"
-          - "--exclude=venv"
-          - "--exclude=__pycache__"
-          - "--exclude=*.pyc"
-          - "--exclude=.DS_Store"
+    - name: Ensure deploy directory is clean
+      file:
+        path: "{{ deploy_dir }}"
+        state: absent
+      
+    - name: Create deploy directory
+      file:
+        path: "{{ deploy_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Copy application files
+      copy:
+        src: "{{ playbook_dir }}/../{{ item }}"
+        dest: "{{ deploy_dir }}/{{ item }}"
+        mode: preserve
+      delegate_to: localhost
+      with_items:
+        - app.py
+        - requirements.txt
+        - LICENSE
+        - README.md
+        - DEPLOYMENT.md
+
+    - name: Copy static directory
+      copy:
+        src: "{{ playbook_dir }}/../static/"
+        dest: "{{ deploy_dir }}/static/"
+        mode: preserve
+      delegate_to: localhost
+
+    - name: Copy templates directory
+      copy:
+        src: "{{ playbook_dir }}/../templates/"
+        dest: "{{ deploy_dir }}/templates/"
+        mode: preserve
+      delegate_to: localhost
+
+    - name: Copy holonet-stamp directory
+      copy:
+        src: "{{ playbook_dir }}/../holonet-stamp/"
+        dest: "{{ deploy_dir }}/holonet-stamp/"
+        mode: preserve
       delegate_to: localhost
 
     - name: Verify requirements.txt was copied
@@ -73,6 +102,16 @@
     - name: Show requirements.txt status
       debug:
         msg: "requirements.txt {{ 'exists' if requirements_check.stat.exists else 'MISSING' }} at {{ deploy_dir }}/requirements.txt"
+
+    - name: List deployed files for debugging
+      find:
+        paths: "{{ deploy_dir }}"
+        recurse: yes
+      register: deployed_files
+
+    - name: Show deployed files
+      debug:
+        msg: "Deployed files: {{ deployed_files.files | map(attribute='path') | list }}"
 
     - name: Set ownership of application directory
       file:
