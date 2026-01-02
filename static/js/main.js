@@ -6,7 +6,10 @@ class GreedoApp {
         this.timestampData = null;
         this.updateInterval = null;
         this.animationIndex = 0;
-        this.animations = ['logo-bounce', 'logo-glow', 'logo-float', 'logo-pulse'];
+        this.animations = ['logo-bounce', 'logo-glow', 'logo-float', 'logo-pulse', 'logo-combined'];
+        this.animationNames = ['bounce', 'glow', 'float', 'pulse', 'combined'];
+        this.spaceGun = null;
+        this.logoContainer = null;
         
         this.init();
     }
@@ -46,6 +49,12 @@ class GreedoApp {
         // Add ambient sparkles around logo
         this.startAmbientSparkles();
         
+        // Start continuous floating sparkles
+        this.startFloatingSparkles();
+        
+        // Setup space gun cursor
+        this.setupSpaceGun();
+        
         console.log('✨ Gree.do initialized successfully!');
     }
     
@@ -81,8 +90,7 @@ class GreedoApp {
         this.applyLogoAnimation();
         
         // Update animation display with current animation name
-        const currentAnimation = this.animations[this.animationIndex];
-        const animationName = currentAnimation.replace('logo-', '');
+        const animationName = this.animationNames[this.animationIndex];
         this.updateAnimationDisplay(animationName);
     }
     
@@ -254,6 +262,150 @@ class GreedoApp {
         
         // Initialize animation display
         this.updateAnimationDisplay('bounce');
+        
+        // Get logo container for space gun area
+        this.logoContainer = document.querySelector('.logo-container');
+    }
+    
+    setupSpaceGun() {
+        // Create space gun cursor element
+        this.spaceGun = document.createElement('div');
+        this.spaceGun.className = 'space-gun';
+        document.body.appendChild(this.spaceGun);
+        
+        // Hide space gun initially
+        this.spaceGun.style.display = 'none';
+        
+        if (this.logoContainer) {
+            // Show space gun when hovering over logo area
+            this.logoContainer.addEventListener('mouseenter', () => {
+                this.logoContainer.classList.add('space-gun-cursor');
+                this.spaceGun.style.display = 'block';
+            });
+            
+            // Hide space gun when leaving logo area
+            this.logoContainer.addEventListener('mouseleave', () => {
+                this.logoContainer.classList.remove('space-gun-cursor');
+                this.spaceGun.style.display = 'none';
+            });
+            
+            // Update space gun position on mouse move
+            this.logoContainer.addEventListener('mousemove', (e) => {
+                this.spaceGun.style.left = e.clientX + 'px';
+                this.spaceGun.style.top = e.clientY + 'px';
+            });
+            
+            // Shooting effect on click
+            this.logoContainer.addEventListener('click', (e) => {
+                this.shootSpaceGun(e);
+            });
+        }
+    }
+    
+    shootSpaceGun(e) {
+        // Add shooting effect
+        this.spaceGun.classList.add('shooting');
+        
+        // Create blast sparkles at click location
+        this.createBlastEffect(e.clientX, e.clientY);
+        
+        // Remove shooting class after animation
+        setTimeout(() => {
+            this.spaceGun.classList.remove('shooting');
+        }, 300);
+    }
+    
+    createBlastEffect(x, y) {
+        // Create multiple sparkles for blast effect
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+                this.createBlastSparkle(x, y, i);
+            }, i * 20);
+        }
+    }
+    
+    createBlastSparkle(x, y, index) {
+        const sparkle = document.createElement('div');
+        const colors = ['#10b981', '#14b8a6', '#8b5a2b', '#34d399', '#ffffff'];
+        const color = colors[index % colors.length];
+        
+        sparkle.style.cssText = `
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: ${color};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            left: ${x}px;
+            top: ${y}px;
+            box-shadow: 0 0 8px ${color};
+        `;
+        
+        document.body.appendChild(sparkle);
+        
+        // Explosive animation
+        const angle = (index * 45) * (Math.PI / 180);
+        const distance = 40 + Math.random() * 80;
+        const duration = 600 + Math.random() * 400;
+        
+        sparkle.animate([
+            {
+                transform: 'translate(0, 0) scale(1) rotate(0deg)',
+                opacity: 1,
+                filter: 'brightness(2)'
+            },
+            {
+                transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0) rotate(720deg)`,
+                opacity: 0,
+                filter: 'brightness(0)'
+            }
+        ], {
+            duration: duration,
+            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        }).addEventListener('finish', () => {
+            sparkle.remove();
+        });
+    }
+    
+    startFloatingSparkles() {
+        // Create floating sparkles continuously
+        setInterval(() => {
+            this.createFloatingSparkle();
+        }, 800);
+        
+        // Create initial batch
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                this.createFloatingSparkle();
+            }, i * 200);
+        }
+    }
+    
+    createFloatingSparkle() {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'floating-sparkle';
+        
+        // Random horizontal position
+        const startX = Math.random() * window.innerWidth;
+        sparkle.style.left = startX + 'px';
+        
+        // Random size variation
+        const size = 3 + Math.random() * 4;
+        sparkle.style.width = size + 'px';
+        sparkle.style.height = size + 'px';
+        
+        // Random delay for staggered effect
+        sparkle.style.animationDelay = Math.random() * 2 + 's';
+        
+        document.body.appendChild(sparkle);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+            if (sparkle.parentNode) {
+                sparkle.remove();
+            }
+        }, 12000 + Math.random() * 2000);
     }
     
     setupDropdown() {

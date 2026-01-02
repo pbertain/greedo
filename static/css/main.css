@@ -250,6 +250,103 @@ body {
     animation: gentlePulse 2s ease-in-out infinite;
 }
 
+.logo-combined {
+    animation:
+        gentleBounce 3s ease-in-out infinite,
+        gentleGlow 4s ease-in-out infinite alternate,
+        gentleFloat 6s ease-in-out infinite,
+        gentlePulse 2s ease-in-out infinite;
+}
+
+/* Space gun cursor */
+.space-gun-cursor {
+    cursor: none !important;
+}
+
+.space-gun {
+    position: fixed;
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+    z-index: 10000;
+    transition: transform 0.1s ease;
+    transform-origin: center;
+}
+
+.space-gun::before {
+    content: "🔫";
+    font-size: 20px;
+    display: block;
+    transform: rotate(-45deg);
+    filter: sepia(1) hue-rotate(120deg) saturate(2) brightness(1.2);
+}
+
+.space-gun.shooting::after {
+    content: "💥";
+    position: absolute;
+    font-size: 16px;
+    left: -8px;
+    top: -8px;
+    animation: shootEffect 0.3s ease-out;
+}
+
+@keyframes shootEffect {
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2) rotate(180deg);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.8) rotate(360deg);
+    }
+}
+
+/* Floating sparkles */
+.floating-sparkle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: var(--primary-green);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0;
+    animation: floatSparkle 8s linear infinite;
+}
+
+.floating-sparkle:nth-child(odd) {
+    background: var(--secondary-teal);
+    animation-duration: 10s;
+}
+
+.floating-sparkle:nth-child(3n) {
+    background: var(--accent-brown);
+    animation-duration: 12s;
+}
+
+@keyframes floatSparkle {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh) rotate(0deg) scale(0);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(90vh) rotate(36deg) scale(1);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(-10vh) rotate(324deg) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20vh) rotate(360deg) scale(0);
+    }
+}
+
 @keyframes gentleBounce {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
