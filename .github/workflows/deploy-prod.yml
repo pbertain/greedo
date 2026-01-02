@@ -1,24 +1,16 @@
 name: Deploy to Production
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
-    inputs:
-      confirm_production:
-        description: 'Type "DEPLOY-TO-PROD" to confirm production deployment'
-        required: true
-        default: ''
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Verify production confirmation
-      if: github.event.inputs.confirm_production != 'DEPLOY-TO-PROD'
-      run: |
-        echo "Production deployment requires confirmation. Please enter 'DEPLOY-TO-PROD' in the input field."
-        exit 1
-        
     - name: Checkout code
       uses: actions/checkout@v4
       
