@@ -569,23 +569,33 @@ body {
     }
     
     .navigation {
-        position: static;
-        text-align: center;
-        margin-top: 1rem;
-        padding: 1rem;
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
     }
     
     .dropdown-content {
-        position: static;
+        position: absolute;
+        bottom: 100%;
+        right: 0;
+        margin-bottom: 0.5rem;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+    }
+    
+    .dropdown.active .dropdown-content {
         opacity: 1;
         visibility: visible;
-        transform: none;
-        margin-top: 1rem;
-        margin-bottom: 0;
+        transform: translateY(0);
     }
     
     .header-content {
-        padding: 1rem;
+        padding: 0.5rem;
+    }
+    
+    .header {
+        min-height: auto;
     }
     
     /* Disable background banner on mobile */
@@ -628,12 +638,22 @@ body {
     }
     
     .header-content {
-        padding: 0.5rem;
+        padding: 0.25rem;
+    }
+    
+    .header {
+        min-height: auto;
+        padding: 0;
     }
     
     /* Ensure background banner stays disabled on small mobile */
     .header::before {
         display: none;
+    }
+    
+    .navigation {
+        bottom: 0.25rem;
+        right: 0.25rem;
     }
     
     .banner-image {
