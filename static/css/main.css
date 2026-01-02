@@ -588,6 +588,11 @@ body {
         padding: 1rem;
     }
     
+    /* Disable background banner on mobile */
+    .header::before {
+        display: none;
+    }
+    
     .banner-image {
         width: 95vw;
         min-width: 280px;
@@ -624,6 +629,11 @@ body {
     
     .header-content {
         padding: 0.5rem;
+    }
+    
+    /* Ensure background banner stays disabled on small mobile */
+    .header::before {
+        display: none;
     }
     
     .banner-image {
