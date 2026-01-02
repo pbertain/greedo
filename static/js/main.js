@@ -37,8 +37,14 @@ class GreedoApp {
         // Set up controls
         this.setupControls();
         
+        // Set up dropdown navigation
+        this.setupDropdown();
+        
         // Add some sparkle effects
         this.addSparkleEffects();
+        
+        // Add ambient sparkles around logo
+        this.startAmbientSparkles();
         
         console.log('✨ Gree.do initialized successfully!');
     }
@@ -228,6 +234,49 @@ class GreedoApp {
         });
     }
     
+    setupDropdown() {
+        const dropdownBtn = document.getElementById('nav-dropdown');
+        const dropdown = dropdownBtn?.parentElement;
+        const dropdownContent = document.getElementById('dropdown-content');
+        
+        if (!dropdownBtn || !dropdown) return;
+        
+        dropdownBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            dropdown.classList.toggle('active');
+            this.createSparkles(dropdownBtn);
+            
+            // Add sparkle burst when opening
+            if (dropdown.classList.contains('active')) {
+                this.createSparkleburst(dropdownBtn);
+            }
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+        
+        // Close dropdown when pressing escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                dropdown.classList.remove('active');
+            }
+        });
+        
+        // Add sparkles to dropdown links
+        dropdownContent?.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                this.createSparkles(link);
+                dropdown.classList.remove('active');
+            });
+        });
+    }
+    
     showLoading() {
         const loadingElements = document.querySelectorAll('.loading');
         loadingElements.forEach(el => el.style.display = 'inline-block');
@@ -328,6 +377,120 @@ class GreedoApp {
         ], {
             duration: duration,
             easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        }).addEventListener('finish', () => {
+            sparkle.remove();
+        });
+    }
+    
+    createSparkleburst(element) {
+        const rect = element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        // Create a burst of 12 sparkles
+        for (let i = 0; i < 12; i++) {
+            setTimeout(() => {
+                this.createEnhancedSparkle(centerX, centerY, i);
+            }, i * 30);
+        }
+    }
+    
+    createEnhancedSparkle(x, y, index) {
+        const sparkle = document.createElement('div');
+        const colors = ['#10b981', '#14b8a6', '#8b5a2b', '#34d399'];
+        const color = colors[index % colors.length];
+        
+        sparkle.style.cssText = `
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: ${color};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            left: ${x}px;
+            top: ${y}px;
+            box-shadow: 0 0 6px ${color};
+        `;
+        
+        document.body.appendChild(sparkle);
+        
+        // More dramatic animation
+        const angle = (index * 30) * (Math.PI / 180); // Spread evenly in circle
+        const distance = 60 + Math.random() * 60;
+        const duration = 1200 + Math.random() * 800;
+        
+        sparkle.animate([
+            {
+                transform: 'translate(0, 0) scale(1) rotate(0deg)',
+                opacity: 1,
+                filter: 'brightness(1.5)'
+            },
+            {
+                transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0) rotate(360deg)`,
+                opacity: 0,
+                filter: 'brightness(3)'
+            }
+        ], {
+            duration: duration,
+            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        }).addEventListener('finish', () => {
+            sparkle.remove();
+        });
+    }
+    
+    startAmbientSparkles() {
+        // Create subtle sparkles around the logo periodically
+        setInterval(() => {
+            if (this.logoElement && Math.random() < 0.3) {
+                this.createAmbientSparkle();
+            }
+        }, 2000);
+    }
+    
+    createAmbientSparkle() {
+        const logoRect = this.logoElement.getBoundingClientRect();
+        const centerX = logoRect.left + logoRect.width / 2;
+        const centerY = logoRect.top + logoRect.height / 2;
+        
+        // Random position around logo
+        const angle = Math.random() * Math.PI * 2;
+        const radius = logoRect.width / 2 + 20 + Math.random() * 40;
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
+        
+        const sparkle = document.createElement('div');
+        sparkle.style.cssText = `
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: var(--primary-green);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+            left: ${x}px;
+            top: ${y}px;
+            opacity: 0;
+        `;
+        
+        document.body.appendChild(sparkle);
+        
+        sparkle.animate([
+            {
+                opacity: 0,
+                transform: 'scale(0)'
+            },
+            {
+                opacity: 0.6,
+                transform: 'scale(1)'
+            },
+            {
+                opacity: 0,
+                transform: 'scale(0)'
+            }
+        ], {
+            duration: 3000,
+            easing: 'ease-in-out'
         }).addEventListener('finish', () => {
             sparkle.remove();
         });

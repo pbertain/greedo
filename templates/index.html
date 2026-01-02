@@ -40,29 +40,36 @@
             <img src="{{ url_for('static', filename='img/gree-do-banner.png') }}" alt="Gree.do Banner" class="banner-image">
         </div>
         
-        <!-- Navigation in bottom right -->
+        <!-- Dropdown Navigation -->
         <nav class="navigation">
-            <div class="nav-links">
-                <a href="https://github.com/pbertain/greedo" target="_blank" class="nav-link">
-                    <i class="fab fa-github"></i>
-                    GitHub
-                </a>
-                <a href="/docs" class="nav-link">
-                    <i class="fas fa-code"></i>
-                    Swagger
-                </a>
-                <a href="/redoc" class="nav-link">
-                    <i class="fas fa-book"></i>
-                    ReDoc
-                </a>
-                <a href="/health" class="nav-link">
-                    <i class="fas fa-heartbeat"></i>
-                    Health
-                </a>
-                <a href="/about" class="nav-link">
-                    <i class="fas fa-info-circle"></i>
-                    About
-                </a>
+            <div class="dropdown">
+                <button class="dropdown-btn" id="nav-dropdown">
+                    <i class="fas fa-bars"></i>
+                    Menu
+                    <i class="fas fa-chevron-down dropdown-arrow"></i>
+                </button>
+                <div class="dropdown-content" id="dropdown-content">
+                    <a href="https://github.com/pbertain/greedo" target="_blank" class="nav-link">
+                        <i class="fab fa-github"></i>
+                        GitHub
+                    </a>
+                    <a href="/docs" class="nav-link">
+                        <i class="fas fa-code"></i>
+                        Swagger
+                    </a>
+                    <a href="/redoc" class="nav-link">
+                        <i class="fas fa-book"></i>
+                        ReDoc
+                    </a>
+                    <a href="/health" class="nav-link">
+                        <i class="fas fa-heartbeat"></i>
+                        Health
+                    </a>
+                    <a href="/about" class="nav-link">
+                        <i class="fas fa-info-circle"></i>
+                        About
+                    </a>
+                </div>
             </div>
         </nav>
     </header>
