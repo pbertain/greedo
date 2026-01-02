@@ -5,9 +5,6 @@ class GreedoApp {
         this.logoElement = null;
         this.timestampData = null;
         this.updateInterval = null;
-        this.animationIndex = 0;
-        this.animations = ['logo-bounce', 'logo-glow', 'logo-float', 'logo-pulse', 'logo-combined'];
-        this.animationNames = ['bounce', 'glow', 'float', 'pulse', 'combined'];
         this.spaceGun = null;
         this.logoContainer = null;
         
@@ -61,51 +58,11 @@ class GreedoApp {
     startLogoAnimations() {
         if (!this.logoElement) return;
         
-        // Start with first animation
-        this.applyLogoAnimation();
-        
-        // Cycle through animations every 10 seconds
-        setInterval(() => {
-            this.cycleLogoAnimation();
-        }, 10000);
+        // Always use combined animation
+        this.logoElement.classList.add('logo-combined');
+        console.log('🎭 Applied combined animation (all effects)');
     }
     
-    applyLogoAnimation() {
-        if (!this.logoElement) return;
-        
-        // Remove all animation classes
-        this.animations.forEach(anim => {
-            this.logoElement.classList.remove(anim);
-        });
-        
-        // Add current animation
-        const currentAnimation = this.animations[this.animationIndex];
-        this.logoElement.classList.add(currentAnimation);
-        
-        console.log(`🎭 Applied animation: ${currentAnimation}`);
-    }
-    
-    cycleLogoAnimation() {
-        this.animationIndex = (this.animationIndex + 1) % this.animations.length;
-        this.applyLogoAnimation();
-        
-        // Update animation display with current animation name
-        const animationName = this.animationNames[this.animationIndex];
-        this.updateAnimationDisplay(animationName);
-    }
-    
-    updateAnimationDisplay(animationName) {
-        if (this.animationNameEl) {
-            this.animationNameEl.textContent = animationName;
-            
-            // Add a subtle pulse effect when changed
-            this.animationNameEl.style.transform = 'scale(1.1)';
-            this.animationNameEl.style.transition = 'transform 0.2s ease';
-            setTimeout(() => {
-                this.animationNameEl.style.transform = 'scale(1)';
-            }, 200);
-        }
-    }
     
     async loadTimestampData() {
         try {
@@ -232,36 +189,12 @@ class GreedoApp {
     }
     
     setupControls() {
-        // Get animation indicator elements
-        this.animationIndicator = document.getElementById('animation-indicator');
-        this.animationNameEl = this.animationIndicator?.querySelector('.animation-name');
-        
-        // Animation control button
-        const animateBtn = document.getElementById('animate-btn');
-        if (animateBtn) {
-            animateBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.cycleLogoAnimation();
-                this.createSparkles(animateBtn);
-            });
-        }
-        
-        // Add click handlers for nav links and buttons with sparkle effects
+        // Add click handlers for nav links with sparkle effects
         document.querySelectorAll('.nav-link, .btn').forEach(link => {
             link.addEventListener('click', (e) => {
                 this.createSparkles(e.target);
             });
         });
-        
-        // Add sparkle effect to animation indicator on hover
-        if (this.animationIndicator) {
-            this.animationIndicator.addEventListener('mouseenter', () => {
-                this.createSparkles(this.animationIndicator);
-            });
-        }
-        
-        // Initialize animation display
-        this.updateAnimationDisplay('bounce');
         
         // Get logo container for space gun area
         this.logoContainer = document.querySelector('.logo-container');
@@ -369,17 +302,82 @@ class GreedoApp {
     }
     
     startFloatingSparkles() {
-        // Create floating sparkles continuously
+        // Create floating sparkles continuously - MORE SPARKLES!
         setInterval(() => {
             this.createFloatingSparkle();
-        }, 800);
+        }, 400); // Doubled frequency
+        
+        // Create star sparkles around logo
+        setInterval(() => {
+            this.createStarSparkles();
+        }, 1000);
         
         // Create initial batch
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 8; i++) {
             setTimeout(() => {
                 this.createFloatingSparkle();
-            }, i * 200);
+            }, i * 100);
         }
+    }
+    
+    createStarSparkles() {
+        if (!this.logoElement) return;
+        
+        // Create sparkles in star pattern around logo
+        const logoRect = this.logoElement.getBoundingClientRect();
+        const centerX = logoRect.left + logoRect.width / 2;
+        const centerY = logoRect.top + logoRect.height / 2;
+        
+        // Create 5-pointed star pattern
+        for (let i = 0; i < 5; i++) {
+            const angle = (i * 72) * (Math.PI / 180); // 72 degrees apart
+            const radius = logoRect.width / 2 + 30 + Math.random() * 20;
+            const x = centerX + Math.cos(angle) * radius;
+            const y = centerY + Math.sin(angle) * radius;
+            
+            setTimeout(() => {
+                this.createStarSparkle(x, y);
+            }, i * 100);
+        }
+    }
+    
+    createStarSparkle(x, y) {
+        const sparkle = document.createElement('div');
+        sparkle.style.cssText = `
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #ffff00;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+            left: ${x}px;
+            top: ${y}px;
+            opacity: 0;
+            box-shadow: 0 0 10px #ffff00, 0 0 20px #ffff00;
+        `;
+        
+        document.body.appendChild(sparkle);
+        
+        sparkle.animate([
+            {
+                opacity: 0,
+                transform: 'scale(0) rotate(0deg)'
+            },
+            {
+                opacity: 1,
+                transform: 'scale(1.5) rotate(180deg)'
+            },
+            {
+                opacity: 0,
+                transform: 'scale(0) rotate(360deg)'
+            }
+        ], {
+            duration: 2000,
+            easing: 'ease-in-out'
+        }).addEventListener('finish', () => {
+            sparkle.remove();
+        });
     }
     
     createFloatingSparkle() {
