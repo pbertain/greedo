@@ -79,6 +79,24 @@ class GreedoApp {
     cycleLogoAnimation() {
         this.animationIndex = (this.animationIndex + 1) % this.animations.length;
         this.applyLogoAnimation();
+        
+        // Update animation display with current animation name
+        const currentAnimation = this.animations[this.animationIndex];
+        const animationName = currentAnimation.replace('logo-', '');
+        this.updateAnimationDisplay(animationName);
+    }
+    
+    updateAnimationDisplay(animationName) {
+        if (this.animationNameEl) {
+            this.animationNameEl.textContent = animationName;
+            
+            // Add a subtle pulse effect when changed
+            this.animationNameEl.style.transform = 'scale(1.1)';
+            this.animationNameEl.style.transition = 'transform 0.2s ease';
+            setTimeout(() => {
+                this.animationNameEl.style.transform = 'scale(1)';
+            }, 200);
+        }
     }
     
     async loadTimestampData() {
@@ -206,15 +224,9 @@ class GreedoApp {
     }
     
     setupControls() {
-        // Refresh button
-        const refreshBtn = document.getElementById('refresh-btn');
-        if (refreshBtn) {
-            refreshBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.loadTimestampData();
-                this.createSparkles(refreshBtn);
-            });
-        }
+        // Get animation indicator elements
+        this.animationIndicator = document.getElementById('animation-indicator');
+        this.animationNameEl = this.animationIndicator?.querySelector('.animation-name');
         
         // Animation control button
         const animateBtn = document.getElementById('animate-btn');
@@ -226,12 +238,22 @@ class GreedoApp {
             });
         }
         
-        // Add click handlers for nav links with sparkle effects
+        // Add click handlers for nav links and buttons with sparkle effects
         document.querySelectorAll('.nav-link, .btn').forEach(link => {
             link.addEventListener('click', (e) => {
                 this.createSparkles(e.target);
             });
         });
+        
+        // Add sparkle effect to animation indicator on hover
+        if (this.animationIndicator) {
+            this.animationIndicator.addEventListener('mouseenter', () => {
+                this.createSparkles(this.animationIndicator);
+            });
+        }
+        
+        // Initialize animation display
+        this.updateAnimationDisplay('bounce');
     }
     
     setupDropdown() {
