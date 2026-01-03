@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Gree.do - Star Wars Epoch Time (SWET)</title>
+    <title>About (Han Shot First)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
@@ -12,7 +12,7 @@
     <header class="header">
         <div class="header-content">
             <h1><i class="fas fa-info-circle"></i> About Gree.do</h1>
-            <p>Understanding Star Wars Epoch Time and Galactic Time Systems</p>
+            <p>Understanding Star Wars Epoch Time and other Galactic Time Systems</p>
         </div>
         
         <nav class="navigation">
@@ -38,15 +38,16 @@
             
             <!-- Introduction -->
             <section style="margin-bottom: 3rem;">
-                <h2><i class="fas fa-rocket"></i> What is Gree.do?</h2>
+                <h2><i class="fas fa-rocket"></i> About Gree.do?</h2>
+                <p style="font-size: 1.5rem; line-height: 1.8; color: var(--text-secondary);">
+                    We all know: Han shot first.
+                </p>
                 <p style="font-size: 1.125rem; line-height: 1.8; color: var(--text-secondary);">
-                    Gree.do is a dynamic web service that provides both real-world and Star Wars-themed timestamps through a beautiful animated interface and REST API endpoints. It combines practical time-keeping with the rich lore of the Star Wars universe, offering multiple galactic time systems for developers, fans, and anyone who wants to add a touch of galactic magic to their projects.
+                	gree.do defines Star Wars Epoch Time (SWET) for the first time ever!  There is an animated interface and REST API endpoints. It shows some of the other time modes from the lore of the Star Wars universe, with multiple galactic time systems for developers, fans, and anyone who wants to use galactic times modes in their projects.
                 </p>
                 
                 <div class="fact-section" style="margin: 2rem 0;">
-                    <h3><i class="fas fa-shield-alt"></i> Essential Truth</h3>
-                    <p style="font-size: 1.25rem; font-weight: 600;">Han shot first.</p>
-                    <p>This fundamental fact anchors our understanding of the galaxy and serves as the cornerstone of all temporal calculations within the Gree.do system.</p>
+                    <h3><i class="fas fa-shield-alt"></i>Han shot first.</h3>
                 </div>
             </section>
 
@@ -55,18 +56,18 @@
                 <h2><i class="fas fa-star"></i> SWET (Star Wars Epoch Time)</h2>
                 
                 <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(20, 184, 166, 0.1)); padding: 2rem; border-radius: 12px; border: 2px solid var(--primary-green); margin: 1.5rem 0;">
-                    <h3>The Foundation of Galactic Time</h3>
+                    <h3>Star Wars Epoch Time</h3>
                     <p>
-                        <strong>SWET (Star Wars Epoch Time)</strong> is a custom time system designed specifically for this project, 
-                        similar to Unix time but with a galactic twist. SWET counts seconds since the theatrical release 
-                        of Star Wars: A New Hope.
+                        <strong>Origin of SWET (Star Wars Epoch Time)</strong> is a custom time system designed specifically for this project, 
+                        similar to Unix (Epoch) time but rather SWET counts seconds since the theatrical release 
+                        of Star Wars: A New Hope on Wednesday, May 25, 1977.
                     </p>
                     
                     <div class="timestamp-data" style="margin: 1.5rem 0;">
-                        <h4>SWET Specifications:</h4>
+                        <h4>SWET Specs:</h4>
                         <div class="timestamp-item">
                             <span class="timestamp-label">Epoch Start:</span>
-                            <span class="timestamp-value">1977-05-25 00:00:00 UTC</span>
+                            <span class="timestamp-value">1977-05-26 00:00:00 UTC</span>
                         </div>
                         <div class="timestamp-item">
                             <span class="timestamp-label">Unit:</span>
@@ -84,9 +85,9 @@
                     
                     <h4>Why May 25, 1977?</h4>
                     <p>
-                        This date marks the theatrical release of Star Wars in the United States, making it the perfect 
-                        anchor point for galactic time. Just as Unix time starts from January 1, 1970 (the "Unix Epoch"), 
-                        SWET starts from the moment that changed science fiction forever.
+                        This is the date of the theatrical release of Star Wars in the United States, making it the 
+                        anchor point for this time mode. Unable to find the time of the first showing, we picked 15:00 PDT since there is a reference to San Francisco having the first showing, but that turns out to be 00:00 on May 26 UTC! Just like Unix time was born on January 1, 1970 (the "Unix Epoch"), 
+                        SWET is birthed from the moment that changed science fiction forever.
                     </p>
                 </div>
             </section>
@@ -179,35 +180,6 @@
                 </div>
             </section>
 
-            <!-- Technical Implementation -->
-            <section style="margin-bottom: 3rem;">
-                <h2><i class="fas fa-cogs"></i> Technical Implementation</h2>
-                
-                <p>
-                    The Gree.do system is built using modern web technologies and follows established astronomical 
-                    and time-keeping principles adapted for the Star Wars universe.
-                </p>
-
-                <div class="timestamp-data">
-                    <h4>Key Features:</h4>
-                    <div class="timestamp-item">
-                        <span class="timestamp-label">Deterministic:</span>
-                        <span class="timestamp-value">Same input = Same output</span>
-                    </div>
-                    <div class="timestamp-item">
-                        <span class="timestamp-label">Testable:</span>
-                        <span class="timestamp-value">Comprehensive unit tests</span>
-                    </div>
-                    <div class="timestamp-item">
-                        <span class="timestamp-label">Log-friendly:</span>
-                        <span class="timestamp-value">Multiple output formats</span>
-                    </div>
-                    <div class="timestamp-item">
-                        <span class="timestamp-label">Human-readable:</span>
-                        <span class="timestamp-value">Clear, intuitive displays</span>
-                    </div>
-                </div>
-
                 <h4>Conversion Accuracy:</h4>
                 <p>
                     All time conversions are mathematically precise and follow established Star Wars lore where possible. 
@@ -257,22 +229,22 @@
                     <h4>Special Thanks</h4>
                     <ul style="margin: 1rem 0; padding-left: 2rem;">
                         <li><strong>Crystal Odenkirk</strong> - Star Wars calendar conversions and timeline research</li>
+                        <ul style="margin: 1rem 0; padding-left: 2rem;">
+			                <li><a href="https://crysodenkirk.com/conlangs/SWtimeline.php" target="_blank">Crystal Odenkirk's Star Wars Timeline</a></li>
+		                </ul>
+                    </ul>
+                    <ul style="margin: 1rem 0; padding-left: 2rem;">
                         <li><strong>SWCombine Community</strong> - Combine Galactic Time specifications</li>
-                        <li><strong>George Lucas</strong> - Creating the Star Wars universe that makes this all possible</li>
+                        <ul style="margin: 1rem 0; padding-left: 2rem;">
+		                    <li><a href="https://www.swcombine.com/rules/?Timeframe#Combine_Galactic_Time" target="_blank">SWCombine CGT Documentation</a></li>
+	                    </ul>
                     </ul>
                 </div>
-
-                <h4>External References:</h4>
-                <ul style="margin: 1rem 0; padding-left: 2rem;">
-                    <li><a href="https://crysodenkirk.com/conlangs/SWtimeline.php" target="_blank">Crystal Odenkirk's Star Wars Timeline</a></li>
-                    <li><a href="https://www.swcombine.com/rules/?Timeframe#Combine_Galactic_Time" target="_blank">SWCombine CGT Documentation</a></li>
-                    <li><a href="https://github.com/pbertain/greedo" target="_blank">Gree.do Source Code</a></li>
-                </ul>
 
                 <div class="fact-section" style="margin: 2rem 0;">
                     <p style="text-align: center; font-size: 1.25rem; font-weight: 600;">
                         <i class="fas fa-star"></i> 
-                        May the Force be with you, and remember: Han shot first! 
+                        May the Force be with you, and ... Han shot first! 
                         <i class="fas fa-star"></i>
                     </p>
                 </div>
@@ -283,7 +255,7 @@
 
     <footer class="footer">
         <p>
-            Built with ❤️ and the Force | <a href="/">Return to Gree.do</a> | 
+            Built with the Force | <a href="/">Return to Gree.do</a> | 
             <a href="https://github.com/pbertain/greedo">View Source</a>
         </p>
     </footer>
